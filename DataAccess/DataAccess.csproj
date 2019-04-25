@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6D881868-8AC9-4EFB-B6C3-29CF886F6E19}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataAccess</RootNamespace>
+    <AssemblyName>DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\assembly.json" />
+    <Compile Include="ExtendedTypes\AssemblyAndVotes.cs" />
+    <Compile Include="ExtendedTypes\CreditReport.cs" />
+    <Compile Include="ExtendedTypes\CustomerDailyTxn.cs" />
+    <Compile Include="ExtendedTypes\AssemblyPanchayat.cs" />
+    <Compile Include="ExtendedTypes\DistrictAssembly.cs" />
+    <Compile Include="ExtendedTypes\ExtDailyTxn.cs" />
+    <Compile Include="ExtendedTypes\ReturnTypeEnum.cs" />
+    <Compile Include="ExtendedTypes\ZonalDistrict.cs" />
+    <Compile Include="PrimaryTypes\block.cs" />
+    <Compile Include="PrimaryTypes\Assembly.cs" />
+    <Compile Include="PrimaryTypes\BoothReport.cs" />
+    <Compile Include="PrimaryTypes\DailyCollectionDetail.cs" />
+    <Compile Include="PrimaryTypes\CollectionPerDay.cs" />
+    <Compile Include="PrimaryTypes\District.cs" />
+    <Compile Include="PrimaryTypes\Expenditure.cs" />
+    <Compile Include="PrimaryTypes\IncomeReport.cs" />
+    <Compile Include="PrimaryTypes\InHandAndBank.cs" />
+    <Compile Include="PrimaryTypes\Investment.cs" />
+    <Compile Include="PrimaryTypes\Panchayat.cs" />
+    <Compile Include="PrimaryTypes\Petrol.cs" />
+    <Compile Include="PrimaryTypes\PollingStation.cs" />
+    <Compile Include="PrimaryTypes\PollingStation2016.cs" />
+    <Compile Include="PrimaryTypes\VoteData.cs" />
+    <Compile Include="PrimaryTypes\Zonal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\csvData\Assembly.csv" />
+    <None Include="Data\csvData\DataSource\2016-Results\AC WISE CANDIDATE COUNT.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\01 ARIYALUR.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\02 CHENNAI.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\03 COIMBATORE.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\04 CUDDALORE.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\05 DHARMAPURI.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\06 DINDIGUL.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\07 ERODE.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\08 KANCHEEPURAM.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\09 KANYAKUMARI_TAMIL.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\10 KARUR.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\11 KRISHNAGIRI.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\12 MADURAI.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\13 NAGAPATTINAM.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\14 NAMAKKAL.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\15 THE NILGIRIS.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\16 PERAMBALUR.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\17 PUDHUKOTAI.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\18 RAMANATHAPURAM.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\19 SALEM.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\20 SIVAGANGA.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\21 THANJAVUR.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\22 THENI.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\23 THOOTHUKKUDI.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\24 TIRUCHIRAPPALLI.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\25 TIRUNELVELI.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\26 THIRUPPUR.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\27 THIRUVALLUR.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\28 TIRUVANNAMALAI.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\30 VELLORE.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\31 VILLUPURAM.pdf" />
+    <None Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\32 VIRDHUNAGAR.pdf" />
+    <None Include="Data\csvData\DataSource\tamilnadu_AssemblyAndPanchayat.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\01-Kancheepuram.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\02-Tiruvallur.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\03-Cuddalore.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\04-Villupuram.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\05-Vellore.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\06-Tiruvannamalai.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\07-Salem.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\08-namakkal.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\09-Dharmapuri.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\10-Krishnagiri.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\11-Erode.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\12-Tiruppur.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\13-Coimbatore.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\14-The Nilgiris.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\15Thanjavur.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\16-Nagapattinam.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\17-Tiruvarur.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\18-Tirichirappalli.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\19-Karur.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\20-Perambalur.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\21-Ariyalur.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\22-Pudukkottai.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\23-Madurai.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\24-Theni.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\25-Dindigul.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\26-Ramanathapuram\26-Ramanadhapuram.csv" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\26-Ramanathapuram\26-Ramanadhapuram.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\26-Ramanathapuram\26-Ramanadhapuram.xlsx" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\27-Virudhunagar.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\28-Sivagangai.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\29-Tirunelveli.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\30-Thoothukudi.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\31-Kanniyakumari.pdf" />
+    <None Include="Data\csvData\DataSource\VillagePanchayats\AllVillages.pdf" />
+    <None Include="Data\csvData\District.csv" />
+    <None Include="Data\csvData\PanchayatUnion%28Blocks%29.csv" />
+    <None Include="Data\csvData\PollingStation.csv" />
+    <None Include="Data\csvData\Postings.csv" />
+    <None Include="Data\csvData\Zonal.csv" />
+    <None Include="Data\panchayat.json" />
+    <None Include="Data\block.json" />
+    <None Include="Data\district.json" />
+    <None Include="Data\PollingStation.json" />
+    <None Include="Data\PollingStation_2016.json" />
+    <None Include="Data\votedata.json" />
+    <None Include="Data\zonal.json" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{3b50d786-0b24-4845-889e-9439e55b8d91}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\csvData\DataSource\Parlimentary_Assembly-PollingBooths\29 Thiruvarur.txt" />
+    <Content Include="Data\TextFile1.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
