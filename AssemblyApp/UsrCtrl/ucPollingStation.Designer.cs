@@ -34,6 +34,7 @@
             this.cmbReports = new System.Windows.Forms.ComboBox();
             this.cmbScope = new System.Windows.Forms.ComboBox();
             this.cmbUnionBlocks = new System.Windows.Forms.ComboBox();
+            this.btnReport = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -82,6 +83,7 @@
             // 
             // cmbScope
             // 
+            this.cmbScope.DisplayMember = "AssemblyNo";
             this.cmbScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbScope.FormattingEnabled = true;
             this.cmbScope.Items.AddRange(new object[] {
@@ -97,6 +99,7 @@
             // 
             // cmbUnionBlocks
             // 
+            this.cmbUnionBlocks.DisplayMember = "AssemblyNo";
             this.cmbUnionBlocks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbUnionBlocks.FormattingEnabled = true;
             this.cmbUnionBlocks.Items.AddRange(new object[] {
@@ -110,10 +113,21 @@
             this.cmbUnionBlocks.ValueMember = "AssemblyNo";
             this.cmbUnionBlocks.SelectedIndexChanged += new System.EventHandler(this.cmbUnionBlocks_SelectedIndexChanged);
             // 
+            // btnReport
+            // 
+            this.btnReport.Location = new System.Drawing.Point(259, 12);
+            this.btnReport.Name = "btnReport";
+            this.btnReport.Size = new System.Drawing.Size(75, 23);
+            this.btnReport.TabIndex = 6;
+            this.btnReport.Text = "Reports";
+            this.btnReport.UseVisualStyleBackColor = true;
+            this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
+            // 
             // ucPollingStation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnReport);
             this.Controls.Add(this.cmbUnionBlocks);
             this.Controls.Add(this.cmbScope);
             this.Controls.Add(this.cmbReports);
@@ -136,5 +150,6 @@
         private System.Windows.Forms.ComboBox cmbReports;
         private System.Windows.Forms.ComboBox cmbScope;
         private System.Windows.Forms.ComboBox cmbUnionBlocks;
+        private System.Windows.Forms.Button btnReport;
     }
 }

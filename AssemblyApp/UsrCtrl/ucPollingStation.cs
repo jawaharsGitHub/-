@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DataAccess.PrimaryTypes;
 using Common.ExtensionMethod;
+using System.IO;
+using System.Diagnostics;
 
 namespace CenturyFinCorpApp.UsrCtrl
 {
@@ -33,6 +35,33 @@ namespace CenturyFinCorpApp.UsrCtrl
             cmbAssembly.SelectedValue = 210;
 
             cmbUnionBlocks.DataSource = pollingStations.Select(s => s.UnionBlocks).Distinct().ToList();
+
+
+            var data = (from p in pollingStations
+                        group p by p.Panchayat.Trim() into newGroup
+                        select new BoothReport
+                        {
+                            PanchayatName = newGroup.Key,
+                            BoothCount = newGroup.Count(),
+                            Votes = newGroup.Sum(s => s.TotalVotes),
+                            HamletsCount = (from x in newGroup.ToList()
+                                            let h = x.Hamlets.Split('\n')
+                                            select h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).Count()).Sum(),
+                            HamletsList =
+                                         string.Join(Environment.NewLine, (from x in newGroup.ToList()
+                                                                           let h = x.Hamlets.Split('\n')
+                                                                           let m = string.Join(Environment.NewLine, h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).ToArray())
+                                                                           select m).ToArray()),
+                            UnionBlocks = newGroup.ToList().First().UnionBlocks,
+                            Scope = newGroup.ToList().First().Scope
+
+
+
+
+                        }).DistinctBy(d => d.PanchayatName).ToList();
+
+
+            boothReport = data.ToList();
 
         }
 
@@ -64,55 +93,27 @@ namespace CenturyFinCorpApp.UsrCtrl
 
             dataGridView1.DataSource = ps;
 
+            var mergedPS = (from p in ps
+                            group p by p.PartNo into newGroup
+                            where newGroup.Count() > 1
+                            select newGroup.Count() -1).Sum();
 
-            label1.Text = $"{ps.Count} Polling Stations";
+
+
+            label1.Text = $"{ps.Count - mergedPS} Polling Booth";
         }
 
         private void cmbReports_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (customers == null) return;
             var value = ((KeyValuePair<int, string>)cmbReports.SelectedItem).Key;
-            List<PollingStation> searchedPollingStations;
-
-
 
             if (value == 1)
             {
-                var data = (from p in pollingStations
-                            group p by p.Panchayat.Trim() into newGroup
-                            select new BoothReport
-                            {
-                                PanchayatName = newGroup.Key,
-                                BoothCount = newGroup.Count(),
-                                Votes = newGroup.Sum(s => s.TotalVotes),
-                                HamletsCount = (from x in newGroup.ToList()
-                                                let h = x.Hamlets.Split('\n')
-                                                select h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).Count()).Sum(),
-                                HamletsList =
-                                             string.Join(Environment.NewLine, (from x in newGroup.ToList()
-                                                                               let h = x.Hamlets.Split('\n')
-                                                                               let m = string.Join(Environment.NewLine, h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).ToArray())
-                                                                               select m).ToArray()),
-                                UnionBlocks = newGroup.ToList().First().UnionBlocks,
-                                Scope = newGroup.ToList().First().Scope
-
-
-
-
-                            }).DistinctBy(d => d.PanchayatName).ToList();
-
-                var mergedStations = (from p in pollingStations
-                                      group p by p.PartNo into newGroup
-                                      where newGroup.Count() > 1
-                                      select newGroup).ToList();
-
-                boothReport = data.ToList();
                 dataGridView1.DataSource = boothReport;
             }
 
             else if (value == 2)
             {
-
                 dataGridView1.DataSource = boothReport.OrderByDescending(o => o.Votes).ToList();
             }
             else if (value == 3)
@@ -126,18 +127,74 @@ namespace CenturyFinCorpApp.UsrCtrl
                 dataGridView1.DataSource = boothReport.OrderByDescending(o => o.HamletsCount).ToList();
             }
 
+            label1.Text = $"{boothReport.Count} Panchayats";
+
         }
 
         private void cmbScope_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = boothReport.Where(w => w.Scope == cmbScope.Text).ToList();
 
+            var scopedData = boothReport.Where(w => w.Scope == cmbScope.Text).OrderByDescending(o => o.Votes).ToList();
+            dataGridView1.DataSource = scopedData;
+            label1.Text = $"{scopedData.Count} Panchayats";
         }
 
         private void cmbUnionBlocks_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = boothReport.Where(w => w.UnionBlocks.Trim() == cmbUnionBlocks.Text.Trim()).OrderByDescending(o => o.Votes).ToList();
+            var filteresData = boothReport.Where(w => w.UnionBlocks.Trim() == cmbUnionBlocks.Text.Trim()).OrderByDescending(o => o.Votes).ToList();
+            dataGridView1.DataSource = filteresData;
+            label1.Text = $"{filteresData.Count} Panchayats";
 
+
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            SaveToTxt();
+        }
+
+        public void SaveToTxt()
+        {
+
+            string docPath =
+          Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            int serialNo = 0;
+            using (TextWriter tw = new StreamWriter(Path.Combine(docPath, "WriteLines.txt")))
+            {
+                foreach (var item in boothReport)
+                {
+                    serialNo += 1;
+                    tw.WriteLine(string.Format($"{serialNo}.{item.PanchayatName}(வார்டு - {item.HamletsCount} ஓட்டு - {item.Votes}) {Environment.NewLine}------------------------------------------------------------{Environment.NewLine}"));
+
+                    int hamletNo = 0;
+                    foreach (var ham in item.HamletsList.Split('\n'))
+                    {
+                        hamletNo += 1;
+                        tw.WriteLine($"{hamletNo}.{ham}");
+                    }
+
+                    tw.WriteLine(Environment.NewLine);
+                }
+            }
+
+
+            Process.Start(Path.Combine(docPath, "WriteLines.txt"));
+
+            //  string docPath =
+            //Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            //  using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "WriteLines.txt")))
+            //  {
+
+            //      foreach (var item in boothReport)
+            //      {
+            //          tw.WriteLine(string.Format($"Item: {0} ({item.HamletsList.Count()}) - Cost: {1}", item.PanchayatName, item.HamletsList));
+            //      }
+
+            //      foreach (string line in lines)
+            //          outputFile.WriteLine(line);
+            //  }
         }
     }
 }
