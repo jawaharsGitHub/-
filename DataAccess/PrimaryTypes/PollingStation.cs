@@ -13,6 +13,7 @@ namespace DataAccess.PrimaryTypes
         private static string JsonFilePath = AppConfiguration.PollingStationFile;
 
         public string PartNo { get; set; }
+        public int BoothGroupNo { get; set; }
         public string pollingStation { get; set; }
         public string BoothAdress { get; set; }
         public string RevenueVillage { get; set; }
@@ -30,6 +31,8 @@ namespace DataAccess.PrimaryTypes
         public string Taluk { get; set; }
         public string District { get; set; }
         public string Pincode { get; set; }
+        public int PageNo { get; set; }
+        public int Thoguthi { get; set; }
         public string Status { get; set; }
         public string OverlapPartNo { get; set; }
         public string Scope { get; set; }
@@ -37,9 +40,10 @@ namespace DataAccess.PrimaryTypes
 
 
 
-        public static List<PollingStation> GetAll()
+        public static List<PollingStation> GetAll(object thoguthiNo)
         {
-            return ReadFileAsObjects<PollingStation>(JsonFilePath);
+            var fileName = AppConfiguration.GetDynamicPath($"PollingStation_{thoguthiNo}.json");
+            return ReadFileAsObjects<PollingStation>(fileName);
         }
 
     }

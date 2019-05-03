@@ -178,8 +178,9 @@
     <None Include="Data\panchayat.json" />
     <None Include="Data\block.json" />
     <None Include="Data\district.json" />
-    <None Include="Data\PollingStation.json" />
-    <None Include="Data\PollingStation_2016.json" />
+    <None Include="Data\PollingStation_210.json" />
+    <None Include="Data\PollingStation_211.json" />
+    <None Include="Data\PollingStation_old.json" />
     <None Include="Data\votedata.json" />
     <None Include="Data\zonal.json" />
     <None Include="packages.config">

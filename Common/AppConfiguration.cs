@@ -41,12 +41,20 @@ namespace Common
 
         public static string PetrolFile { get; } = GetFullPath("PetrolFile");
 
-        private static string GetFullPath(string configKey)
+        public static string GetFullPath(string configKey)
         {
-            if (ConfigurationManager.AppSettings[configKey] == null) return null;
+           if (ConfigurationManager.AppSettings[configKey] == null) return null;
             return Path.Combine(ConfigurationManager.AppSettings["SourceFolder"], ConfigurationManager.AppSettings[configKey]);
 
         }
+
+        public static string GetDynamicPath(string fileName)
+        {
+            //if (ConfigurationManager.AppSettings[configKey] == null) return null;
+            return Path.Combine(ConfigurationManager.AppSettings["SourceFolder"], fileName);
+
+        }
+
 
 
         public static bool AddOrUpdateAppSettings(string key, string value)

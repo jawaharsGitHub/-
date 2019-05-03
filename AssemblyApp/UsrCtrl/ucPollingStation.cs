@@ -24,44 +24,14 @@ namespace CenturyFinCorpApp.UsrCtrl
         {
             InitializeComponent();
 
-            pollingStations = PollingStation.GetAll();
-
-            dataGridView1.DataSource = pollingStations;
 
             cmbAssembly.DataSource = Assembly.GetAll();
 
             cmbReports.DataSource = GetOptions();
 
+            this.cmbAssembly.SelectedIndexChanged += new System.EventHandler(this.cmbAssembly_SelectedIndexChanged);
             cmbAssembly.SelectedValue = 210;
 
-            cmbUnionBlocks.DataSource = pollingStations.Select(s => s.UnionBlocks).Distinct().ToList();
-
-
-            var data = (from p in pollingStations
-                        group p by p.Panchayat.Trim() into newGroup
-                        select new BoothReport
-                        {
-                            PanchayatName = newGroup.Key,
-                            BoothCount = newGroup.Count(),
-                            Votes = newGroup.Sum(s => s.TotalVotes),
-                            HamletsCount = (from x in newGroup.ToList()
-                                            let h = x.Hamlets.Split('\n')
-                                            select h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).Count()).Sum(),
-                            HamletsList =
-                                         string.Join(Environment.NewLine, (from x in newGroup.ToList()
-                                                                           let h = x.Hamlets.Split('\n')
-                                                                           let m = string.Join(Environment.NewLine, h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).ToArray())
-                                                                           select m).ToArray()),
-                            UnionBlocks = newGroup.ToList().First().UnionBlocks,
-                            Scope = newGroup.ToList().First().Scope
-
-
-
-
-                        }).DistinctBy(d => d.PanchayatName).ToList();
-
-
-            boothReport = data.ToList();
 
         }
 
@@ -89,14 +59,47 @@ namespace CenturyFinCorpApp.UsrCtrl
 
         private void cmbAssembly_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var ps = pollingStations.Where(w => w.PartNo.Substring(0, 3).ToInt32() == cmbAssembly.SelectedValue.ToInt32()).ToList();
+
+            pollingStations = PollingStation.GetAll(cmbAssembly.SelectedValue ?? 210);
+
+            dataGridView1.DataSource = pollingStations;
+
+            cmbUnionBlocks.DataSource = pollingStations.Select(s => s.UnionBlocks).Distinct().ToList();
+
+            var data = (from p in pollingStations
+                        group p by p.Panchayat.Trim() into newGroup
+                        select new BoothReport
+                        {
+                            PanchayatName = newGroup.Key,
+                            BoothCount = newGroup.Count(),
+                            Votes = newGroup.Sum(s => s.TotalVotes),
+                            HamletsCount = (from x in newGroup.ToList()
+                                            let h = x.Hamlets.Split('\n')
+                                            select h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).Count()).Sum(),
+                            HamletsList =
+                                         string.Join(Environment.NewLine, (from x in newGroup.ToList()
+                                                                           let h = x.Hamlets.Split('\n')
+                                                                           let m = string.Join(Environment.NewLine, h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).ToArray())
+                                                                           select m).ToArray()),
+                            UnionBlocks = newGroup.ToList().First().UnionBlocks,
+                            Scope = newGroup.ToList().First().Scope
+
+
+
+
+                        }).DistinctBy(d => d.PanchayatName).ToList();
+
+
+            boothReport = data.ToList();
+
+            var ps = pollingStations.Where(w => w.Thoguthi == cmbAssembly.SelectedValue.ToInt32()).ToList();
 
             dataGridView1.DataSource = ps;
 
             var mergedPS = (from p in ps
                             group p by p.PartNo into newGroup
                             where newGroup.Count() > 1
-                            select newGroup.Count() -1).Sum();
+                            select newGroup.Count() - 1).Sum();
 
 
 
@@ -160,9 +163,14 @@ namespace CenturyFinCorpApp.UsrCtrl
           Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             int serialNo = 0;
-            using (TextWriter tw = new StreamWriter(Path.Combine(docPath, "WriteLines.txt")))
+
+            var data = boothReport.Where(w => w.UnionBlocks == cmbUnionBlocks.SelectedValue.ToString()).ToList();
+
+            var fileName = cmbUnionBlocks.SelectedValue.ToString();
+
+            using (TextWriter tw = new StreamWriter(Path.Combine(docPath, $"{fileName}.txt")))
             {
-                foreach (var item in boothReport)
+                foreach (var item in data)
                 {
                     serialNo += 1;
                     tw.WriteLine(string.Format($"{serialNo}.{item.PanchayatName}(வார்டு - {item.HamletsCount} ஓட்டு - {item.Votes}) {Environment.NewLine}------------------------------------------------------------{Environment.NewLine}"));
@@ -171,7 +179,7 @@ namespace CenturyFinCorpApp.UsrCtrl
                     foreach (var ham in item.HamletsList.Split('\n'))
                     {
                         hamletNo += 1;
-                        tw.WriteLine($"{hamletNo}.{ham}");
+                        tw.WriteLine($"{hamletNo}.{ham} ()");
                     }
 
                     tw.WriteLine(Environment.NewLine);
@@ -179,22 +187,49 @@ namespace CenturyFinCorpApp.UsrCtrl
             }
 
 
-            Process.Start(Path.Combine(docPath, "WriteLines.txt"));
+            Process.Start(Path.Combine(docPath, $"{fileName}.txt"));
 
-            //  string docPath =
-            //Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-            //  using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "WriteLines.txt")))
-            //  {
+        }
 
-            //      foreach (var item in boothReport)
-            //      {
-            //          tw.WriteLine(string.Format($"Item: {0} ({item.HamletsList.Count()}) - Cost: {1}", item.PanchayatName, item.HamletsList));
-            //      }
+        private void btnBoothReport_Click(object sender, EventArgs e)
+        {
 
-            //      foreach (string line in lines)
-            //          outputFile.WriteLine(line);
-            //  }
+            pollingStations = PollingStation.GetAll(cmbAssembly.SelectedValue ?? 210);
+
+            var data = (from ps in pollingStations
+                        group ps by ps.BoothGroupNo into newGroup
+                        select newGroup).ToList();
+
+            //StringBuilder sb = new StringBuilder();
+
+            string docPath =
+          Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var fileName = Path.Combine(docPath, $"{data.ToList().First().ToList().First().Panchayat}-Boothwise.txt");
+
+
+            using (TextWriter tw = new StreamWriter(fileName))
+            {
+                data.ForEach(d =>
+                    {
+                        var tt = d.Count() > 1 ? "கள்" : ""; 
+                        tw.WriteLine($"{d.First().pollingStation} ({d.Count()} வாக்கு சாவடி{tt} {d.Sum(s => s.TotalVotes)} ஓட்டுகள்)");
+                        tw.WriteLine($"---------------------------------------------------------");
+
+                        d.ToList().ForEach(fe =>
+                        {
+                            tw.WriteLine($"பாகம்:{fe.PartNo} - {fe.BoothAdress} ({fe.TotalVotes} ஓட்டுகள்)");
+
+                        });
+
+                        tw.WriteLine(Environment.NewLine);
+
+                    }
+            );
+
+            }
+
+            Process.Start(fileName);
         }
     }
 }

@@ -35,6 +35,7 @@
             this.cmbScope = new System.Windows.Forms.ComboBox();
             this.cmbUnionBlocks = new System.Windows.Forms.ComboBox();
             this.btnReport = new System.Windows.Forms.Button();
+            this.btnBoothReport = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,7 +57,6 @@
             this.cmbAssembly.Size = new System.Drawing.Size(202, 21);
             this.cmbAssembly.TabIndex = 1;
             this.cmbAssembly.ValueMember = "AssemblyNo";
-            this.cmbAssembly.SelectedIndexChanged += new System.EventHandler(this.cmbAssembly_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -123,10 +123,21 @@
             this.btnReport.UseVisualStyleBackColor = true;
             this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
+            // btnBoothReport
+            // 
+            this.btnBoothReport.Location = new System.Drawing.Point(373, 12);
+            this.btnBoothReport.Name = "btnBoothReport";
+            this.btnBoothReport.Size = new System.Drawing.Size(75, 23);
+            this.btnBoothReport.TabIndex = 7;
+            this.btnBoothReport.Text = "Booth Report";
+            this.btnBoothReport.UseVisualStyleBackColor = true;
+            this.btnBoothReport.Click += new System.EventHandler(this.btnBoothReport_Click);
+            // 
             // ucPollingStation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnBoothReport);
             this.Controls.Add(this.btnReport);
             this.Controls.Add(this.cmbUnionBlocks);
             this.Controls.Add(this.cmbScope);
@@ -151,5 +162,6 @@
         private System.Windows.Forms.ComboBox cmbScope;
         private System.Windows.Forms.ComboBox cmbUnionBlocks;
         private System.Windows.Forms.Button btnReport;
+        private System.Windows.Forms.Button btnBoothReport;
     }
 }
