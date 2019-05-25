@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace CenturyFinCorpApp
             // Read CSV.
 
             var resultData = AssemblyResult.GetAll()
-                //.Where(w => w.NTKVotes2019 != null)
+                //.Where(w => w.NTKVotes2019 != null) // this is for thiruvaadanai
                 .ToList();
 
             // 1. all booth level
@@ -42,13 +43,9 @@ namespace CenturyFinCorpApp
             var PolledVotes = new StringBuilder();
             var NTKVotes2019 = new StringBuilder();
             var NTKpercentage = new StringBuilder();
-
             var Panchayat = new StringBuilder();
             var UnionBlocks = new StringBuilder();
             var Hamlets = new StringBuilder();
-
-
-
 
             resultData.ForEach(fe =>
             {
@@ -63,19 +60,26 @@ namespace CenturyFinCorpApp
                 Panchayat.AppendLine($"{fe.Panchayat}");
                 UnionBlocks.AppendLine($"{fe.UnionBlocks}");
                 Hamlets.AppendLine($"{fe.Hamlets}");
-
-
-
-
             });
 
+            //WriteToFile("partNoByBooth.txt", PartNo);
+            //WriteToFile("pollingStationByBootht.txt", pollingStation);
+            //WriteToFile("TotalVotesByBooth.txt", TotalVotes);
+            //WriteToFile("PolledVotesByBooth.txt", PolledVotes);
+            //WriteToFile("NTKVotes2019ByBooth.txt", NTKVotes2019);
+            //WriteToFile("NTKpercentageByBooth.txt", NTKpercentage);
+            //WriteToFile("PanchayatByBooth.txt", Panchayat);
+            //WriteToFile("UnionBlocksByBooth.txt", UnionBlocks);
+            ////WriteToFile("HamletsByPanchayat.txt", Hamlets);
 
 
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            
 
 
 
             // 2. panchayat level
-
 
             //var testdata = resultData.Where(w => w.Panchayat == "களமzz")
 
@@ -89,7 +93,7 @@ namespace CenturyFinCorpApp
                                   NTKVotes = newGroup.Sum(s => s.NTKVotes2019),
                                   percent = Math.Round(Convert.ToDouble(newGroup.Sum(s => s.NTKVotes2019)) / Convert.ToDouble(newGroup.Sum(s => s.PolledVotes)) * 100, 1)
 
-                              }).ToList();
+                              }).OrderByDescending(o => o.percent).ToList();
 
 
             PartNo.Clear();
@@ -113,23 +117,31 @@ namespace CenturyFinCorpApp
             });
 
 
-
+            WriteToFile("partNoByPanchayat.txt", PartNo);
+            WriteToFile("pollingStationByPanchayat.txt", pollingStation);
+            WriteToFile("TotalVotesByPanchayat.txt", TotalVotes);
+            WriteToFile("PolledVotesByPanchayat.txt", PolledVotes);
+            WriteToFile("NTKVotes2019ByPanchayat.txt", NTKVotes2019);
+            WriteToFile("NTKpercentageByPanchayat.txt", NTKpercentage);
+            WriteToFile("PanchayatByPanchayat.txt", Panchayat);
+            WriteToFile("UnionBlocksByPanchayat.txt", UnionBlocks);
+            //WriteToFile("HamletsByPanchayat.txt", Hamlets);
 
 
 
             // 3. Ondrium level
 
             var OndriumGrouped = (from pan in resultData
-                              group pan by pan.UnionBlocks into newGroup
-                              select new
-                              {
-                                  Union = newGroup.Key,
-                                  TotalVotes = newGroup.Sum(s => s.TotalVotes),
-                                  PolledVotes = newGroup.Sum(s => s.PolledVotes),
-                                  NTKVotes = newGroup.Sum(s => s.NTKVotes2019),
-                                  percent = Math.Round(Convert.ToDouble(newGroup.Sum(s => s.NTKVotes2019)) / Convert.ToDouble(newGroup.Sum(s => s.PolledVotes)) * 100, 1)
+                                  group pan by pan.UnionBlocks into newGroup
+                                  select new
+                                  {
+                                      Union = newGroup.Key,
+                                      TotalVotes = newGroup.Sum(s => s.TotalVotes),
+                                      PolledVotes = newGroup.Sum(s => s.PolledVotes),
+                                      NTKVotes = newGroup.Sum(s => s.NTKVotes2019),
+                                      percent = Math.Round(Convert.ToDouble(newGroup.Sum(s => s.NTKVotes2019)) / Convert.ToDouble(newGroup.Sum(s => s.PolledVotes)) * 100, 1)
 
-                              }).ToList();
+                                  }).OrderByDescending(o => o.percent).ToList();
 
 
             PartNo.Clear();
@@ -152,10 +164,13 @@ namespace CenturyFinCorpApp
                 NTKpercentage.AppendLine($"{fe.percent}");
             });
 
+            WriteToFile("PanchayatByOndrium.txt", Panchayat);
+            WriteToFile("TotalVotesByOndrium.txt", TotalVotes);
+            WriteToFile("PolledVotesByOndrium.txt", PolledVotes);
+            WriteToFile("NTKVotes2019ByOndrium.txt", NTKVotes2019);
+            WriteToFile("NTKpercentageByOndrium.txt", NTKpercentage);
 
 
-
-            // var listOfObjects = File.ReadLines("result-210.csv").Skip(1).Select(line => new ThiruvadanaiVotes(line)).ToList();
 
 
 
@@ -193,6 +208,17 @@ namespace CenturyFinCorpApp
             panel1.Height = this.Height;
 
             ShowForm<ucZonal>(); // initial form to be loaded
+        }
+
+
+        private void WriteToFile(string fileName, StringBuilder content)
+        {
+            using (TextWriter tw = new StreamWriter(fileName))
+            {
+                tw.WriteLine(content.ToString());
+            }
+
+            Process.Start(fileName);
         }
 
         private void CreateMenu()
