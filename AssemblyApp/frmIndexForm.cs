@@ -28,6 +28,137 @@ namespace CenturyFinCorpApp
 
             InitializeComponent();
 
+            // Read CSV.
+
+            var resultData = AssemblyResult.GetAll()
+                //.Where(w => w.NTKVotes2019 != null)
+                .ToList();
+
+            // 1. all booth level
+
+            var PartNo = new StringBuilder();
+            var pollingStation = new StringBuilder();
+            var TotalVotes = new StringBuilder();
+            var PolledVotes = new StringBuilder();
+            var NTKVotes2019 = new StringBuilder();
+            var NTKpercentage = new StringBuilder();
+
+            var Panchayat = new StringBuilder();
+            var UnionBlocks = new StringBuilder();
+            var Hamlets = new StringBuilder();
+
+
+
+
+            resultData.ForEach(fe =>
+            {
+
+                //PartNo.AppendLine($"{fe.PartNo.Split('-')[1]}");
+                PartNo.AppendLine($"{fe.PartNo}");
+                pollingStation.AppendLine($"{fe.pollingStation}");
+                TotalVotes.AppendLine($"{fe.TotalVotes}");
+                PolledVotes.AppendLine($"{fe.PolledVotes}");
+                NTKVotes2019.AppendLine($"{fe.NTKVotes2019}");
+                NTKpercentage.AppendLine($"{fe.NTKpercentage}");
+                Panchayat.AppendLine($"{fe.Panchayat}");
+                UnionBlocks.AppendLine($"{fe.UnionBlocks}");
+                Hamlets.AppendLine($"{fe.Hamlets}");
+
+
+
+
+            });
+
+
+
+
+
+
+            // 2. panchayat level
+
+
+            //var testdata = resultData.Where(w => w.Panchayat == "களமzz")
+
+            var panGrouped = (from pan in resultData
+                              group pan by pan.Panchayat into newGroup
+                              select new
+                              {
+                                  Panchayat = newGroup.Key,
+                                  TotalVotes = newGroup.Sum(s => s.TotalVotes),
+                                  PolledVotes = newGroup.Sum(s => s.PolledVotes),
+                                  NTKVotes = newGroup.Sum(s => s.NTKVotes2019),
+                                  percent = Math.Round(Convert.ToDouble(newGroup.Sum(s => s.NTKVotes2019)) / Convert.ToDouble(newGroup.Sum(s => s.PolledVotes)) * 100, 1)
+
+                              }).ToList();
+
+
+            PartNo.Clear();
+            pollingStation.Clear();
+            TotalVotes.Clear();
+            PolledVotes.Clear();
+            NTKVotes2019.Clear();
+            NTKpercentage.Clear();
+            Panchayat.Clear();
+            UnionBlocks.Clear();
+            Hamlets.Clear();
+
+
+            panGrouped.ForEach(fe =>
+            {
+                Panchayat.AppendLine($"{fe.Panchayat}");
+                TotalVotes.AppendLine($"{fe.TotalVotes}");
+                PolledVotes.AppendLine($"{fe.PolledVotes}");
+                NTKVotes2019.AppendLine($"{fe.NTKVotes}");
+                NTKpercentage.AppendLine($"{fe.percent}");
+            });
+
+
+
+
+
+
+            // 3. Ondrium level
+
+            var OndriumGrouped = (from pan in resultData
+                              group pan by pan.UnionBlocks into newGroup
+                              select new
+                              {
+                                  Union = newGroup.Key,
+                                  TotalVotes = newGroup.Sum(s => s.TotalVotes),
+                                  PolledVotes = newGroup.Sum(s => s.PolledVotes),
+                                  NTKVotes = newGroup.Sum(s => s.NTKVotes2019),
+                                  percent = Math.Round(Convert.ToDouble(newGroup.Sum(s => s.NTKVotes2019)) / Convert.ToDouble(newGroup.Sum(s => s.PolledVotes)) * 100, 1)
+
+                              }).ToList();
+
+
+            PartNo.Clear();
+            pollingStation.Clear();
+            TotalVotes.Clear();
+            PolledVotes.Clear();
+            NTKVotes2019.Clear();
+            NTKpercentage.Clear();
+            Panchayat.Clear();
+            UnionBlocks.Clear();
+            Hamlets.Clear();
+
+
+            OndriumGrouped.ForEach(fe =>
+            {
+                Panchayat.AppendLine($"{fe.Union}");
+                TotalVotes.AppendLine($"{fe.TotalVotes}");
+                PolledVotes.AppendLine($"{fe.PolledVotes}");
+                NTKVotes2019.AppendLine($"{fe.NTKVotes}");
+                NTKpercentage.AppendLine($"{fe.percent}");
+            });
+
+
+
+
+            // var listOfObjects = File.ReadLines("result-210.csv").Skip(1).Select(line => new ThiruvadanaiVotes(line)).ToList();
+
+
+
             string[] filePaths = Directory.GetFiles(@"C:\Jawahar\RMD and TVD voters list", "*.PDF",
                                          SearchOption.AllDirectories);
 
@@ -101,7 +232,7 @@ namespace CenturyFinCorpApp
 
             var mnuBlock = new ToolStripMenuItem() { Name = "block", Text = "ஒன்றியம்" };
             mnuBlock.Click += (s, e) => ShowForm<ucBlock>(); ;
-            menuStrip.Items.Add(mnuBlock);   
+            menuStrip.Items.Add(mnuBlock);
 
 
             //Member

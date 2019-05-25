@@ -21,6 +21,8 @@ namespace Common
 
         public static string PollingStationFile { get { return GetFullPath("pollingStation"); } }
 
+        public static string AssemblyResultFile { get { return GetFullPath("assemblyResult"); } }
+
         public static string InvestmentFile { get; } = GetFullPath("InvestmentFile");
 
         public static string ClosedNotesFile { get; } = GetFullPath("ClosedNotesFile");

@@ -94,6 +94,9 @@ namespace CenturyFinCorpApp.UsrCtrl
 
             var ps = pollingStations.Where(w => w.Thoguthi == cmbAssembly.SelectedValue.ToInt32()).ToList();
 
+            var scope1 = ps.Where(w => w.Scope == "1").ToList().Count;
+
+
             dataGridView1.DataSource = ps;
 
             var mergedPS = (from p in ps
@@ -113,6 +116,19 @@ namespace CenturyFinCorpApp.UsrCtrl
             if (value == 1)
             {
                 dataGridView1.DataSource = boothReport;
+
+                var totalVotes = boothReport.Sum(s => s.Votes);
+
+                var scope1Votes = boothReport.Where(w => w.Scope == "1").Sum(s => s.Votes);
+
+                var REMAININGvOTES = totalVotes - scope1Votes;
+
+
+                var totalHamlets = boothReport.Sum(s => s.HamletsCount);
+
+                var scope1Hamlets = boothReport.Where(w => w.Scope == "1").Sum(s => s.HamletsCount);
+
+
             }
 
             else if (value == 2)
@@ -230,6 +246,11 @@ namespace CenturyFinCorpApp.UsrCtrl
             }
 
             Process.Start(fileName);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

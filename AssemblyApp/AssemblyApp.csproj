@@ -194,6 +194,9 @@
     <EmbeddedResource Include="UsrCtrl\ucZonal.resx">
       <DependentUpon>ucZonal.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="result-210.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -208,7 +211,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

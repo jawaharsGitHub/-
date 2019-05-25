@@ -60,6 +60,7 @@
     <Compile Include="GlobalValue.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThiruvadanaiVotes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="InterviewTracker\" />

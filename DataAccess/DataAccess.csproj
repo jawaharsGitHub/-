@@ -71,6 +71,7 @@
     <Compile Include="ExtendedTypes\ExtDailyTxn.cs" />
     <Compile Include="ExtendedTypes\ReturnTypeEnum.cs" />
     <Compile Include="ExtendedTypes\ZonalDistrict.cs" />
+    <Compile Include="PrimaryTypes\AssemblyResult.cs" />
     <Compile Include="PrimaryTypes\block.cs" />
     <Compile Include="PrimaryTypes\Assembly.cs" />
     <Compile Include="PrimaryTypes\BoothReport.cs" />
@@ -181,6 +182,10 @@
     <None Include="Data\PollingStation_210.json" />
     <None Include="Data\PollingStation_211.json" />
     <None Include="Data\PollingStation_old.json" />
+    <None Include="Data\result211.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\result210.json" />
     <None Include="Data\votedata.json" />
     <None Include="Data\zonal.json" />
     <None Include="packages.config">
