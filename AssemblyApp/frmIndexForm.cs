@@ -32,7 +32,7 @@ namespace CenturyFinCorpApp
             // Read CSV.
 
             var resultData = AssemblyResult.GetAll()
-                //.Where(w => w.NTKVotes2019 != null) // this is for thiruvaadanai
+                .Where(w => w.NTKVotes2019 != null) // this is for thiruvaadanai
                 .ToList();
 
             // 1. all booth level
@@ -62,20 +62,20 @@ namespace CenturyFinCorpApp
                 Hamlets.AppendLine($"{fe.Hamlets}");
             });
 
-            //WriteToFile("partNoByBooth.txt", PartNo);
-            //WriteToFile("pollingStationByBootht.txt", pollingStation);
-            //WriteToFile("TotalVotesByBooth.txt", TotalVotes);
-            //WriteToFile("PolledVotesByBooth.txt", PolledVotes);
-            //WriteToFile("NTKVotes2019ByBooth.txt", NTKVotes2019);
-            //WriteToFile("NTKpercentageByBooth.txt", NTKpercentage);
-            //WriteToFile("PanchayatByBooth.txt", Panchayat);
-            //WriteToFile("UnionBlocksByBooth.txt", UnionBlocks);
-            ////WriteToFile("HamletsByPanchayat.txt", Hamlets);
+            WriteToFile("partNoByBooth.txt", PartNo);
+            WriteToFile("pollingStationByBootht.txt", pollingStation);
+            WriteToFile("TotalVotesByBooth.txt", TotalVotes);
+            WriteToFile("PolledVotesByBooth.txt", PolledVotes);
+            WriteToFile("NTKVotes2019ByBooth.txt", NTKVotes2019);
+            WriteToFile("NTKpercentageByBooth.txt", NTKpercentage);
+            WriteToFile("PanchayatByBooth.txt", Panchayat);
+            WriteToFile("UnionBlocksByBooth.txt", UnionBlocks);
+            //WriteToFile("HamletsByPanchayat.txt", Hamlets);
 
 
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            
+
 
 
 
