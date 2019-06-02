@@ -14,11 +14,11 @@ namespace DataAccess.PrimaryTypes
 
         public string PartNo { get; set; }
         public string pollingStation { get; set; }
-        public int? NTKVotes2019 { get; set; }
+        public string BoothAdress { get; set; }
         public int? TotalVotes { get; set; }
         public int? PolledVotes { get; set; }
+        public int? NTKVotes2019 { get; set; }
         public decimal? NTKpercentage { get; set; }
-        public string BoothAdress { get; set; }
         public string Panchayat { get; set; }
         public string UnionBlocks { get; set; }
         public string Hamlets { get; set; }

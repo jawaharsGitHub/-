@@ -1,4 +1,5 @@
 ﻿using CenturyFinCorpApp.UsrCtrl;
+using ChoETL;
 using Common;
 using DataAccess;
 using DataAccess.ExtendedTypes;
@@ -6,6 +7,7 @@ using DataAccess.PrimaryTypes;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
@@ -14,6 +16,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using NsExcel = Microsoft.Office.Interop.Excel;
+
 
 namespace CenturyFinCorpApp
 {
@@ -23,6 +27,9 @@ namespace CenturyFinCorpApp
         bool usingMenu = false;
         bool isAdded = false; // for child forms
         public static MenuStrip menuStrip;
+
+
+
 
         public frmIndexForm()
         {
@@ -61,6 +68,18 @@ namespace CenturyFinCorpApp
                 UnionBlocks.AppendLine($"{fe.UnionBlocks}");
                 Hamlets.AppendLine($"{fe.Hamlets}");
             });
+
+
+            //var csv = string.Join(",", resultData.Select(n => n.ToString()).ToArray());
+
+            using (var w = new ChoCSVWriter<AssemblyResult>("ResultData.csv")
+    .WithFirstLineHeader()
+    )
+            {
+                w.Write(resultData);
+            }
+
+
 
             WriteToFile("partNoByBooth.txt", PartNo);
             WriteToFile("pollingStationByBootht.txt", pollingStation);
@@ -117,8 +136,8 @@ namespace CenturyFinCorpApp
             });
 
 
-            WriteToFile("partNoByPanchayat.txt", PartNo);
-            WriteToFile("pollingStationByPanchayat.txt", pollingStation);
+            //WriteToFile("partNoByPanchayat.txt", PartNo);
+            //WriteToFile("pollingStationByPanchayat.txt", pollingStation);
             WriteToFile("TotalVotesByPanchayat.txt", TotalVotes);
             WriteToFile("PolledVotesByPanchayat.txt", PolledVotes);
             WriteToFile("NTKVotes2019ByPanchayat.txt", NTKVotes2019);
@@ -174,28 +193,28 @@ namespace CenturyFinCorpApp
 
 
 
-            string[] filePaths = Directory.GetFiles(@"C:\Jawahar\RMD and TVD voters list", "*.PDF",
-                                         SearchOption.AllDirectories);
+            //string[] filePaths = Directory.GetFiles(@"C:\Jawahar\RMD and TVD voters list", "*.PDF",
+            //                             SearchOption.AllDirectories);
 
-            var data = new List<string>();
+            //var data = new List<string>();
 
-            foreach (var item in filePaths)
-            {
-                data.Add(new FileInfo(item).Name);
+            //foreach (var item in filePaths)
+            //{
+            //    data.Add(new FileInfo(item).Name);
 
-            }
+            //}
 
-            var newData = data.OrderBy(o => o);
+            //var newData = data.OrderBy(o => o);
 
-            StringBuilder ss = new StringBuilder();
+            //StringBuilder ss = new StringBuilder();
 
-            foreach (var i in newData)
-            {
-                ss.AppendLine(i);
+            //foreach (var i in newData)
+            //{
+            //    ss.AppendLine(i);
 
-            }
+            //}
 
-            var result = ss.ToString();
+            //var result = ss.ToString();
 
 
 
@@ -218,7 +237,7 @@ namespace CenturyFinCorpApp
                 tw.WriteLine(content.ToString());
             }
 
-            Process.Start(fileName);
+            //Process.Start(fileName);
         }
 
         private void CreateMenu()
