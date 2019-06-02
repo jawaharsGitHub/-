@@ -16,7 +16,7 @@ namespace CenturyFinCorpApp.UsrCtrl
 {
     public partial class ucPollingStation : UserControl
     {
-        List<PollingStation> pollingStations;
+        List<AssemblyResult> pollingStations;
 
         List<BoothReport> boothReport;
 
@@ -30,7 +30,7 @@ namespace CenturyFinCorpApp.UsrCtrl
             cmbReports.DataSource = GetOptions();
 
             this.cmbAssembly.SelectedIndexChanged += new System.EventHandler(this.cmbAssembly_SelectedIndexChanged);
-            cmbAssembly.SelectedValue = 210;
+            //cmbAssembly.SelectedValue = 210;
 
 
         }
@@ -60,11 +60,11 @@ namespace CenturyFinCorpApp.UsrCtrl
         private void cmbAssembly_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            pollingStations = PollingStation.GetAll(cmbAssembly.SelectedValue ?? 210);
+            pollingStations = PollingStation.GetAll(cmbAssembly.SelectedValue); // ?? 210);
 
             dataGridView1.DataSource = pollingStations;
 
-            cmbUnionBlocks.DataSource = pollingStations.Select(s => s.UnionBlocks).Distinct().ToList();
+            
 
             var data = (from p in pollingStations
                         group p by p.Panchayat.Trim() into newGroup
@@ -91,10 +91,11 @@ namespace CenturyFinCorpApp.UsrCtrl
 
 
             boothReport = data.ToList();
+            cmbUnionBlocks.DataSource = pollingStations.Select(s => s.UnionBlocks).Distinct().ToList();
 
-            var ps = pollingStations.Where(w => w.Thoguthi == cmbAssembly.SelectedValue.ToInt32()).ToList();
+            var ps = pollingStations.Where(w => w.NTKVotes2019 != null).ToList(); // pollingStations.Where(w => w.PartNo == cmbAssembly.SelectedValue.ToInt32()).ToList();
 
-            var scope1 = ps.Where(w => w.Scope == "1").ToList().Count;
+            var scope1 = ps.Where(w => w.Scope == 1).ToList().Count;
 
 
             dataGridView1.DataSource = ps;
@@ -117,16 +118,16 @@ namespace CenturyFinCorpApp.UsrCtrl
             {
                 dataGridView1.DataSource = boothReport;
 
-                var totalVotes = boothReport.Sum(s => s.Votes);
+                //var totalVotes = boothReport.Sum(s => s.Votes);
 
-                var scope1Votes = boothReport.Where(w => w.Scope == "1").Sum(s => s.Votes);
+                //var scope1Votes = boothReport.Where(w => w.Scope == "1").Sum(s => s.Votes);
 
-                var REMAININGvOTES = totalVotes - scope1Votes;
+                //var REMAININGvOTES = totalVotes - scope1Votes;
 
 
-                var totalHamlets = boothReport.Sum(s => s.HamletsCount);
+                //var totalHamlets = boothReport.Sum(s => s.HamletsCount);
 
-                var scope1Hamlets = boothReport.Where(w => w.Scope == "1").Sum(s => s.HamletsCount);
+                //var scope1Hamlets = boothReport.Where(w => w.Scope == "1").Sum(s => s.HamletsCount);
 
 
             }
@@ -153,7 +154,7 @@ namespace CenturyFinCorpApp.UsrCtrl
         private void cmbScope_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            var scopedData = boothReport.Where(w => w.Scope == cmbScope.Text).OrderByDescending(o => o.Votes).ToList();
+            var scopedData = boothReport.Where(w => w.Scope == cmbScope.Text.ToInt32()).OrderByDescending(o => o.Votes).ToList();
             dataGridView1.DataSource = scopedData;
             label1.Text = $"{scopedData.Count} Panchayats";
         }

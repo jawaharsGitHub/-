@@ -12,16 +12,19 @@ namespace DataAccess.PrimaryTypes
         private static string JsonFilePath = AppConfiguration.AssemblyResultFile;
 
 
-        public string PartNo { get; set; }
-        public string pollingStation { get; set; }
-        public string BoothAdress { get; set; }
+        public int PartNo { get; set; }
         public int? TotalVotes { get; set; }
         public int? PolledVotes { get; set; }
         public int? NTKVotes2019 { get; set; }
         public decimal? NTKpercentage { get; set; }
-        public string Panchayat { get; set; }
+        public string pollingStation { get; set; }
+        public string BoothAdress { get; set; }
+        public int? BoothGroupNo { get; set; }
         public string UnionBlocks { get; set; }
+        public string Panchayat { get; set; }
         public string Hamlets { get; set; }
+        public int? Scope { get; set; }
+        
 
 
         public static List<AssemblyResult> GetAll()

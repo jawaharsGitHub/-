@@ -40,10 +40,23 @@ namespace DataAccess.PrimaryTypes
 
 
 
-        public static List<PollingStation> GetAll(object thoguthiNo)
+        public static List<AssemblyResult> GetAll(object thoguthiNo)
         {
-            var fileName = AppConfiguration.GetDynamicPath($"PollingStation_{thoguthiNo}.json");
-            return ReadFileAsObjects<PollingStation>(fileName);
+
+            try
+            {
+
+           
+            //var fileName = AppConfiguration.GetDynamicPath($"PollingStation_{thoguthiNo}.json");
+            var fileName = AppConfiguration.GetDynamicPath($"result{thoguthiNo}.json");
+            return ReadFileAsObjects<AssemblyResult>(fileName);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
     }

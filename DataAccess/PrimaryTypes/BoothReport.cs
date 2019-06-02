@@ -13,7 +13,7 @@ namespace DataAccess.PrimaryTypes
 
         public int BoothCount { get; set; }
 
-        public int Votes { get; set; }
+        public int? Votes { get; set; }
 
         public int HamletsCount { get; set; }
 
@@ -21,7 +21,7 @@ namespace DataAccess.PrimaryTypes
 
         public string UnionBlocks { get; set; }
 
-        public string Scope { get; set; }
+        public int? Scope { get; set; }
 
     }
 }
