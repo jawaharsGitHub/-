@@ -13,7 +13,11 @@ namespace DataAccess.PrimaryTypes
 
         public int BoothCount { get; set; }
 
-        public int? Votes { get; set; }
+        public int? TotalVotes { get; set; }
+
+        public int? PolledVotes { get; set; }
+        public int? NTKVotes2019 { get; set; }
+        public double? NTKpercentage { get; set; }
 
         public int HamletsCount { get; set; }
 

@@ -40,8 +40,8 @@ namespace CenturyFinCorpApp.UsrCtrl
             var myKeyValuePair = new List<KeyValuePair<int, string>>()
                {
                 new KeyValuePair<int, string>(0, "ALL"),
-                   new KeyValuePair<int, string>(1, "Reports"),
-                   new KeyValuePair<int, string>(2, "By Votes"),
+                   new KeyValuePair<int, string>(1, "By Panchayats"),
+                   new KeyValuePair<int, string>(2, "By Ondrium"),
                    new KeyValuePair<int, string>(3, "By Booths"),
                    new KeyValuePair<int, string>(4, "By Hamlets"),
                    new KeyValuePair<int, string>(10, "Return By Yesterday"),
@@ -64,7 +64,7 @@ namespace CenturyFinCorpApp.UsrCtrl
 
             dataGridView1.DataSource = pollingStations;
 
-            
+
 
             var data = (from p in pollingStations
                         group p by p.Panchayat.Trim() into newGroup
@@ -72,7 +72,11 @@ namespace CenturyFinCorpApp.UsrCtrl
                         {
                             PanchayatName = newGroup.Key,
                             BoothCount = newGroup.Count(),
-                            Votes = newGroup.Sum(s => s.TotalVotes),
+                            TotalVotes = newGroup.Sum(s => s.TotalVotes),
+                            PolledVotes = newGroup.Sum(s => s.PolledVotes),
+                            NTKVotes2019 = newGroup.Sum(s => s.NTKVotes2019),
+                            NTKpercentage = Math.Round(Convert.ToDouble(newGroup.Sum(s => s.NTKVotes2019)) / Convert.ToDouble(newGroup.Sum(s => s.PolledVotes)) * 100, 1),
+
                             HamletsCount = (from x in newGroup.ToList()
                                             let h = x.Hamlets.Split('\n')
                                             select h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).Count()).Sum(),
@@ -87,7 +91,8 @@ namespace CenturyFinCorpApp.UsrCtrl
 
 
 
-                        }).DistinctBy(d => d.PanchayatName).ToList();
+                        }).OrderByDescending(o => o.NTKpercentage).ToList();
+            //DistinctBy(d => d.PanchayatName).ToList();
 
 
             boothReport = data.ToList();
@@ -114,6 +119,12 @@ namespace CenturyFinCorpApp.UsrCtrl
         {
             var value = ((KeyValuePair<int, string>)cmbReports.SelectedItem).Key;
 
+            if(value == 0)
+            {
+                pollingStations = PollingStation.GetAll(cmbAssembly.SelectedValue); // ?? 210);
+
+                dataGridView1.DataSource = pollingStations;
+            }
             if (value == 1)
             {
                 dataGridView1.DataSource = boothReport;
@@ -134,7 +145,35 @@ namespace CenturyFinCorpApp.UsrCtrl
 
             else if (value == 2)
             {
-                dataGridView1.DataSource = boothReport.OrderByDescending(o => o.Votes).ToList();
+
+                var data = (from p in pollingStations
+                            group p by p.UnionBlocks.Trim() into newGroup
+                            select new BoothReport
+                            {
+                                UnionBlocks = newGroup.Key,
+                                //BoothCount = newGroup.Count(),
+                                TotalVotes = newGroup.Sum(s => s.TotalVotes),
+                                PolledVotes = newGroup.Sum(s => s.PolledVotes),
+                                NTKVotes2019 = newGroup.Sum(s => s.NTKVotes2019),
+                                NTKpercentage = Math.Round(Convert.ToDouble(newGroup.Sum(s => s.NTKVotes2019)) / Convert.ToDouble(newGroup.Sum(s => s.PolledVotes)) * 100, 1),
+
+                                HamletsCount = (from x in newGroup.ToList()
+                                                let h = x.Hamlets.Split('\n')
+                                                select h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).Count()).Sum(),
+                                HamletsList =
+                                             string.Join(Environment.NewLine, (from x in newGroup.ToList()
+                                                                               let h = x.Hamlets.Split('\n')
+                                                                               let m = string.Join(Environment.NewLine, h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).ToArray())
+                                                                               select m).ToArray()),
+                                //UnionBlocks = newGroup.ToList().First().UnionBlocks,
+                                Scope = newGroup.ToList().First().Scope
+
+
+
+
+                            }).OrderByDescending(o => o.NTKpercentage).ToList();
+
+                dataGridView1.DataSource = data; // boothReport.OrderByDescending(o => o.TotalVotes).ToList();
             }
             else if (value == 3)
             {
@@ -154,16 +193,16 @@ namespace CenturyFinCorpApp.UsrCtrl
         private void cmbScope_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            var scopedData = boothReport.Where(w => w.Scope == cmbScope.Text.ToInt32()).OrderByDescending(o => o.Votes).ToList();
+            var scopedData = boothReport.Where(w => w.Scope == cmbScope.Text.ToInt32()).OrderByDescending(o => o.TotalVotes).ToList();
             dataGridView1.DataSource = scopedData;
             label1.Text = $"{scopedData.Count} Panchayats";
         }
 
         private void cmbUnionBlocks_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var filteresData = boothReport.Where(w => w.UnionBlocks.Trim() == cmbUnionBlocks.Text.Trim()).OrderByDescending(o => o.Votes).ToList();
+            var filteresData = boothReport.Where(w => w.UnionBlocks.Trim() == cmbUnionBlocks.Text.Trim()).OrderByDescending(o => o.TotalVotes).ToList();
             dataGridView1.DataSource = filteresData;
-            label1.Text = $"{filteresData.Count} Panchayats";
+            label1.Text = $"{filteresData.Count()} Panchayats";
 
 
         }
@@ -190,7 +229,7 @@ namespace CenturyFinCorpApp.UsrCtrl
                 foreach (var item in data)
                 {
                     serialNo += 1;
-                    tw.WriteLine(string.Format($"{serialNo}.{item.PanchayatName}(வார்டு - {item.HamletsCount} ஓட்டு - {item.Votes}) {Environment.NewLine}------------------------------------------------------------{Environment.NewLine}"));
+                    tw.WriteLine(string.Format($"{serialNo}.{item.PanchayatName}(வார்டு - {item.HamletsCount} ஓட்டு - {item.TotalVotes}) {Environment.NewLine}------------------------------------------------------------{Environment.NewLine}"));
 
                     int hamletNo = 0;
                     foreach (var ham in item.HamletsList.Split('\n'))
@@ -229,7 +268,7 @@ namespace CenturyFinCorpApp.UsrCtrl
             {
                 data.ForEach(d =>
                     {
-                        var tt = d.Count() > 1 ? "கள்" : ""; 
+                        var tt = d.Count() > 1 ? "கள்" : "";
                         tw.WriteLine($"{d.First().pollingStation} ({d.Count()} வாக்கு சாவடி{tt} {d.Sum(s => s.TotalVotes)} ஓட்டுகள்)");
                         tw.WriteLine($"---------------------------------------------------------");
 
