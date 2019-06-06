@@ -87,6 +87,7 @@
     <Compile Include="PrimaryTypes\PollingStation.cs" />
     <Compile Include="PrimaryTypes\PollingStation2016.cs" />
     <Compile Include="PrimaryTypes\VoteData.cs" />
+    <Compile Include="PrimaryTypes\PartyMember.cs" />
     <Compile Include="PrimaryTypes\Zonal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -179,6 +180,7 @@
     <None Include="Data\panchayat.json" />
     <None Include="Data\block.json" />
     <None Include="Data\district.json" />
+    <None Include="Data\partyMember.json" />
     <None Include="Data\PollingStation_210.json" />
     <None Include="Data\PollingStation_211.json" />
     <None Include="Data\PollingStation_old.json" />

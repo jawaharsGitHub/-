@@ -31,7 +31,8 @@ namespace CenturyFinCorpApp.UsrCtrl
 
             this.cmbAssembly.SelectedIndexChanged += new System.EventHandler(this.cmbAssembly_SelectedIndexChanged);
             //cmbAssembly.SelectedValue = 210;
-
+            dataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
 
         }
 
@@ -42,14 +43,13 @@ namespace CenturyFinCorpApp.UsrCtrl
                 new KeyValuePair<int, string>(0, "ALL"),
                    new KeyValuePair<int, string>(1, "By Panchayats"),
                    new KeyValuePair<int, string>(2, "By Ondrium"),
-                   new KeyValuePair<int, string>(3, "By Booths"),
-                   new KeyValuePair<int, string>(4, "By Hamlets"),
-                   new KeyValuePair<int, string>(10, "Return By Yesterday"),
-                   new KeyValuePair<int, string>(5, "Return By Today"),
-                   new KeyValuePair<int, string>(6, "Return By Tomorrow"),
-                   new KeyValuePair<int, string>(7, "By Return Day"),
-                   new KeyValuePair<int, string>(8, "By Return Type"),
-                   new KeyValuePair<int, string>(9, "By CollectionSpot")
+                   new KeyValuePair<int, string>(3, "> 100 votes"),
+                   new KeyValuePair<int, string>(4, "> 50 votes"),
+                   //new KeyValuePair<int, string>(5, "TEST"),
+                   //new KeyValuePair<int, string>(6, "Return By Tomorrow"),
+                   //new KeyValuePair<int, string>(7, "By Return Day"),
+                   //new KeyValuePair<int, string>(8, "By Return Type"),
+                   //new KeyValuePair<int, string>(9, "By CollectionSpot")
 
                };
 
@@ -122,12 +122,16 @@ namespace CenturyFinCorpApp.UsrCtrl
             if(value == 0)
             {
                 pollingStations = PollingStation.GetAll(cmbAssembly.SelectedValue); // ?? 210);
-
                 dataGridView1.DataSource = pollingStations;
+
+                label1.Text = $"{pollingStations.Count} Record(s)";
+
+
             }
             if (value == 1)
             {
                 dataGridView1.DataSource = boothReport;
+                label1.Text = $"{boothReport.Count} Record(s)";
 
                 //var totalVotes = boothReport.Sum(s => s.Votes);
 
@@ -148,7 +152,7 @@ namespace CenturyFinCorpApp.UsrCtrl
 
                 var data = (from p in pollingStations
                             group p by p.UnionBlocks.Trim() into newGroup
-                            select new BoothReport
+                            select new // BoothReport
                             {
                                 UnionBlocks = newGroup.Key,
                                 //BoothCount = newGroup.Count(),
@@ -166,27 +170,31 @@ namespace CenturyFinCorpApp.UsrCtrl
                                                                                let m = string.Join(Environment.NewLine, h.Where(w => string.IsNullOrEmpty(w.Trim()) == false).ToArray())
                                                                                select m).ToArray()),
                                 //UnionBlocks = newGroup.ToList().First().UnionBlocks,
-                                Scope = newGroup.ToList().First().Scope
+                                //Scope = newGroup.ToList().First().Scope
 
 
 
 
                             }).OrderByDescending(o => o.NTKpercentage).ToList();
 
-                dataGridView1.DataSource = data; // boothReport.OrderByDescending(o => o.TotalVotes).ToList();
+                dataGridView1.DataSource = data;
+                label1.Text = $"{data.Count} Record(s)";
             }
             else if (value == 3)
             {
 
-                dataGridView1.DataSource = boothReport.OrderByDescending(o => o.BoothCount).ToList();
+                var data = pollingStations.Where(w => w.NTKVotes2019 > 100).OrderByDescending(o => o.NTKpercentage).ToList();
+                dataGridView1.DataSource = data;
+                label1.Text = $"{data.Count} Record(s)";
             }
             else if (value == 4)
             {
-
-                dataGridView1.DataSource = boothReport.OrderByDescending(o => o.HamletsCount).ToList();
+                var data = pollingStations.Where(w => w.NTKVotes2019 > 50).OrderByDescending(o => o.NTKpercentage).ToList();
+                dataGridView1.DataSource = data;
+                label1.Text = $"{data.Count} Record(s)";
             }
 
-            label1.Text = $"{boothReport.Count} Panchayats";
+            //label1.Text = $"{boothReport.Count} Panchayats";
 
         }
 

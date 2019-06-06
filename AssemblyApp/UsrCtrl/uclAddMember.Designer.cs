@@ -47,6 +47,8 @@
             this.cmbWard = new System.Windows.Forms.ComboBox();
             this.cmbPollingStation = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.lblMessage = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -216,10 +218,33 @@
             this.label10.TabIndex = 18;
             this.label10.Text = "உறுப்பினர் சேர்க்கை ";
             // 
+            // btnAdd
+            // 
+            this.btnAdd.Location = new System.Drawing.Point(121, 408);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(75, 38);
+            this.btnAdd.TabIndex = 19;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // lblMessage
+            // 
+            this.lblMessage.AutoSize = true;
+            this.lblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMessage.ForeColor = System.Drawing.Color.Red;
+            this.lblMessage.Location = new System.Drawing.Point(225, 412);
+            this.lblMessage.Name = "lblMessage";
+            this.lblMessage.Size = new System.Drawing.Size(122, 26);
+            this.lblMessage.TabIndex = 20;
+            this.lblMessage.Text = "lblMessage";
+            // 
             // uclAddMember
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblMessage);
+            this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.cmbPollingStation);
             this.Controls.Add(this.cmbWard);
@@ -267,5 +292,7 @@
         private System.Windows.Forms.ComboBox cmbWard;
         private System.Windows.Forms.ComboBox cmbPollingStation;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Label lblMessage;
     }
 }

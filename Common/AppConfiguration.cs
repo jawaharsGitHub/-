@@ -41,7 +41,11 @@ namespace Common
 
         public static string OutstandingFile { get; } = GetFullPath("OutstandingFile");
 
+        public static string PartyMemberFile { get { return GetFullPath("PartyMember"); } }
+
         public static string PetrolFile { get; } = GetFullPath("PetrolFile");
+
+        
 
         public static string GetFullPath(string configKey)
         {
