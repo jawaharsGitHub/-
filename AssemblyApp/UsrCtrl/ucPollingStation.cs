@@ -243,7 +243,7 @@ namespace CenturyFinCorpApp.UsrCtrl
                     foreach (var ham in item.HamletsList.Split('\n'))
                     {
                         hamletNo += 1;
-                        tw.WriteLine($"{hamletNo}.{ham} ()");
+                        tw.WriteLine($"{hamletNo}.{ham}");
                     }
 
                     tw.WriteLine(Environment.NewLine);
